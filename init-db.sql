@@ -5,39 +5,33 @@ CREATE SCHEMA IF NOT EXISTS my_order;
 CREATE SEQUENCE IF NOT EXISTS my_order.my_order_id_seq;
 CREATE SEQUENCE IF NOT EXISTS my_order.my_product_id_seq;
 
-
--- Создание таблицы
+-- Создание таблицы Product
 CREATE TABLE IF NOT EXISTS my_order.product
 (
-    id   integer NOT NULL DEFAULT nextval('my_order.my_product_id_seq'),
+    id   serial,
     name text    NOT NULL,
-    cost integer,
+    cost integer NOT NULL,
     primary key (id)
 );
 
--- Создание таблицы
+-- Создание таблицы Order
 CREATE TABLE IF NOT EXISTS my_order.order
 (
-    id                  integer NOT NULL DEFAULT nextval('my_order.my_order_id_seq'),
-    date_time date NOT NULL,
-    cost_total  text    NOT NULL,
-
+    id            serial,
+    date_time     date    NOT NULL,
+    cost_total    integer NOT NULL,
+    fk_product_id integer NOT NULL,
+    foreign key (fk_product_id) references my_order.product (id),
     primary key (id)
 );
 
-
--- -- Создание таблицы
--- CREATE TABLE IF NOT EXISTS my_report.basic
--- (
---     id         integer NOT NULL DEFAULT nextval('my_report.my_report_id_seq'),
---     brand_name text,
---     product    text,
---     unit       text,
---     quantity   float,
---     price      float,
---     currency   text,
---     primary key (id),
---     foreign key (brand_name) references my_report.brands (brand_name),
---     foreign key (unit) references my_report.units (unit_name_short),
---     foreign key (currency) references my_report.currencies (currency_name_short)
--- );
+-- Создание таблицы Order&Product
+CREATE TABLE IF NOT EXISTS my_order.order_product
+(
+    fk_order_id   integer NOT NULL,
+    fk_product_id integer NOT NULL,
+    primary key (fk_product_id),
+    primary key (fk_order_id),
+    foreign key (fk_product_id) references my_order.product (id),
+    foreign key (fk_order_id) references my_order.order (id)
+);

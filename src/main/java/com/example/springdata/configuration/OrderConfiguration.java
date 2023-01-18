@@ -1,8 +1,9 @@
 package com.example.springdata.configuration;
 
-import com.example.springdata.model.Order;
-import com.example.springdata.model.Product;
-import com.example.springdata.services.ProductRepository;
+import com.example.springdata.dto.OrderDto;
+import com.example.springdata.dto.ProductDto;
+import com.example.springdata.services.OrderService;
+import com.example.springdata.services.ProductService;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
@@ -16,47 +17,50 @@ import org.springframework.stereotype.Service;
  * 12.01.2023
  * 11:11
  */
+
 @Configuration
-@Service
 @Data
 
 public class OrderConfiguration {
 
-  private final ProductRepository repository;
+  private final ProductService productService;
+
+  private final OrderService orderService;
 
   @Autowired
-  public OrderConfiguration(ProductRepository repository) {
-    this.repository = repository;
+  public OrderConfiguration(ProductService productService, OrderService orderService) {
+    this.productService = productService;
+    this.orderService = orderService;
   }
 
   @Bean
-  public Order orderOne() {
-    List<Product> ordersList = getProductList(4455, 3322, 6699, 4455);
-    return new Order(1, ordersList);
+  public OrderDto orderOne() {
+    List<ProductDto> ordersList = getProductList("fanta", "cola", "sprite");
+    return orderService.createOrder(new OrderDto(ordersList));
   }
 
   @Bean
-  public Order orderTwo() {
-    List<Product> ordersList = getProductList(4455, 3322, 4455, 3322);
-    return new Order(2, ordersList);
+  public OrderDto orderTwo() {
+    List<ProductDto> ordersList = getProductList("fanta", "sprite", "fanta", "sprite");
+    return orderService.createOrder(new OrderDto(ordersList));
   }
 
   @Bean
-  public Order orderThree() {
-    List<Product> ordersList = getProductList(4455, 3322, 6699, 6699);
-    return new Order(3, ordersList);
+  public OrderDto orderThree() {
+    List<ProductDto> ordersList = getProductList("cola", "fanta", "cola", "sprite");
+    return orderService.createOrder(new OrderDto(ordersList));
   }
 
   @Bean
-  public Order orderFour() {
-    List<Product> ordersList = getProductList(4455, 3322, 6699, 3322);
-    return new Order(4, ordersList);
+  public OrderDto orderFour() {
+    List<ProductDto> ordersList = getProductList("cola", "cola", "sprite", "cola");
+    return orderService.createOrder(new OrderDto(ordersList));
   }
 
-  private List<Product> getProductList(int... products) {
-    List<Product> ordersList = new ArrayList<>();
-    for (int i : products) {
-      ordersList.add(repository.getById(i));
+  private List<ProductDto> getProductList(String... products) {
+    List<ProductDto> ordersList = new ArrayList<>();
+    for (String product : products) {
+      ordersList.add(productService.getByName(product));
     }
     return ordersList;
   }

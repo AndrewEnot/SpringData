@@ -1,6 +1,8 @@
 package com.example.springdata.configuration;
 
-import com.example.springdata.model.Product;
+import com.example.springdata.dto.ProductDto;
+import com.example.springdata.services.ProductService;
+import lombok.Data;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,20 +12,21 @@ import org.springframework.context.annotation.Configuration;
  * 14:27
  */
 @Configuration
+@Data
 public class ProductConfiguration {
 
-  @Bean
-  public Product productCola() {
-    return new Product(4455, "Cola", 49.90);
-  }
+  private final ProductService productService;
 
   @Bean
-  public Product productFanta() {
-    return new Product(3322, "Fanta", 49.80);
+  public ProductDto productDtoCola() {
+    return productService.createProduct(new ProductDto("Cola", 49.90));
   }
-
   @Bean
-  public Product productPepsi() {
-    return new Product(6699, "Pepsi", 49.70);
+  public ProductDto productDtoFanta() {
+    return productService.createProduct(new ProductDto("Fanta", 49.80));
+  }
+  @Bean
+  public ProductDto productDtoPepsi() {
+    return productService.createProduct(new ProductDto("Pepsi", 49.70));
   }
 }

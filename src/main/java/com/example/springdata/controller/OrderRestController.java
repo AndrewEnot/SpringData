@@ -1,11 +1,14 @@
 package com.example.springdata.controller;
 
-import com.example.springdata.model.Order;
-import com.example.springdata.services.OrderRepository;
+import com.example.springdata.dto.OrderDto;
+import com.example.springdata.dto.ProductDto;
+import com.example.springdata.services.OrderService;
+import com.example.springdata.services.ProductService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /*
@@ -15,17 +18,26 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/springdata")
 public class OrderRestController {
 
-  private final OrderRepository orderRepository;
+  private final OrderService orderService;
+  private final ProductService productService;
 
-  @GetMapping(value = "/talk/get_order/{id}")
-  public Order getOrderById(@PathVariable int id) {
-    return orderRepository.getOrderById(id);
+  @GetMapping(value = "/order/{id}")
+  public OrderDto getById(@PathVariable int id) {
+    return orderService.getOrderById(id);
   }
-
-  @GetMapping(value = "/talk/get_all_orders/")
-  public List<Order> getAllOrders() {
-    return orderRepository.getAllOrders();
+  @GetMapping(value = "/orders")
+  public List<OrderDto> getAllOrders() {
+    return orderService.getAllOrders();
+  }
+  @GetMapping(value = "/product/{id}")
+  public ProductDto getProductById(@PathVariable int id) {
+    return productService.getById(id);
+  }
+  @GetMapping(value = "/products")
+  public List<ProductDto> getAllProducts() {
+    return productService.getAllProducts();
   }
 }
