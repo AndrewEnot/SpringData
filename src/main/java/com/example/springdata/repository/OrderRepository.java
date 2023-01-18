@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrderRepository extends CrudRepository<Order,Integer> {
 
-  Order getOrderById(int id);
-  List<Order> getAllOrders();
+//  Order getOrderById(int id);
+//  List<Order> getAllOrders();
 
 }

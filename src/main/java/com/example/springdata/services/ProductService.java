@@ -26,15 +26,18 @@ public class ProductService {
     productDto.setId(product.getId());
     return productDto;
   }
+
   public ProductDto getById(int id) {
-    return objectMapper.convertValue(productRepository.getById(id), ProductDto.class);
+    return objectMapper.convertValue(productRepository.findById(id), ProductDto.class);
   }
+
   public ProductDto getByName(String name) {
     return objectMapper.convertValue(productRepository.getByName(name), ProductDto.class);
   }
 
   public List<ProductDto> getAllProducts() {
-    return productRepository.getAllProducts().stream()
+    List<Product> productDtoList = (List<Product>) productRepository.findAll();
+    return productDtoList.stream()
         .map(product -> objectMapper.convertValue(product, ProductDto.class)).toList();
   }
 }

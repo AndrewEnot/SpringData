@@ -18,18 +18,19 @@ import org.hibernate.annotations.Parameter;
  */
 
 @Entity
-@Table(name = "product")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(schema = "my_order")
 public class Product {
+
   @Id
   @GeneratedValue(generator = "sequence-generator")
   @GenericGenerator(
       name = "sequence-generator",
       strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-      parameters =  {
+      parameters = {
           @Parameter(name = "sequence_name", value = "my_order.my_product_id_seq")
       }
   )

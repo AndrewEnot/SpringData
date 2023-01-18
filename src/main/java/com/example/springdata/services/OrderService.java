@@ -34,14 +34,11 @@ public class OrderService {
   }
 
   public OrderDto getOrderById(int id) {
-    return objectMapper.convertValue(orderRepository.getOrderById(id), OrderDto.class);
+    return objectMapper.convertValue(orderRepository.findById(id), OrderDto.class);
   }
 
   public boolean removeOrderById(int id) {
-    Order orderById = orderRepository.getOrderById(id);
-    if (orderById == null) {
-      return false;
-    }
+    Order orderById = orderRepository.findById(id).orElse(new Order());
     orderRepository.delete(orderById);
     return true;
   }
@@ -55,7 +52,7 @@ public class OrderService {
   }
 
   public List<OrderDto> getAllOrders() {
-    return orderRepository.getAllOrders().stream()
-        .map(order -> objectMapper.convertValue(order, OrderDto.class)).toList();
+    List<Order> all = (List<Order>)orderRepository.findAll();
+    return all.stream().map(order -> objectMapper.convertValue(order, OrderDto.class)).toList();
   }
 }

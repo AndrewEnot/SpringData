@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,10 +27,11 @@ import lombok.Setter;
  */
 
 @Entity
-@NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "order")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(schema = "my_order")
 public class Order {
 
   @Id

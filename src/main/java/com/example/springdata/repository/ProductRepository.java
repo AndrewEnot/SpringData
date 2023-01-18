@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface ProductRepository extends CrudRepository<Product, Integer> {
 
   Product getByName(String name);
-  Product getById(int id);
-  List<Product> getAllProducts();
+//  Product getById(int id);
+//  List<Product> getAllProducts();
 
 }
