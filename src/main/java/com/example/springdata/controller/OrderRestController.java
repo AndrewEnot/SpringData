@@ -18,24 +18,27 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/springdata")
+@RequestMapping("/api/example")
 public class OrderRestController {
 
   private final OrderService orderService;
   private final ProductService productService;
 
-  @GetMapping(value = "/order/{id}")
+  @GetMapping(value = "/orders/{id}")
   public OrderDto getById(@PathVariable int id) {
     return orderService.getOrderById(id);
   }
+
   @GetMapping(value = "/orders")
   public List<OrderDto> getAllOrders() {
     return orderService.getAllOrders();
   }
-  @GetMapping(value = "/product/{id}")
+
+  @GetMapping(value = "/products/{id}")
   public ProductDto getProductById(@PathVariable int id) {
     return productService.getById(id);
   }
+
   @GetMapping(value = "/products")
   public List<ProductDto> getAllProducts() {
     return productService.getAllProducts();

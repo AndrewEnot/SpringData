@@ -13,12 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDto {
+
   private Integer id;
   private String name;
   private double cost;
+  private OrderDto order;
 
-  public ProductDto(String name, double cost){
-    this.name = name;
-    this.cost = cost;
-  }
 }

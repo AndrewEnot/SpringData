@@ -1,7 +1,6 @@
 package com.example.springdata.repository;
 
 import com.example.springdata.model.Order;
-import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,8 +11,4 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface OrderRepository extends CrudRepository<Order,Integer> {
-
-//  Order getOrderById(int id);
-//  List<Order> getAllOrders();
-
 }

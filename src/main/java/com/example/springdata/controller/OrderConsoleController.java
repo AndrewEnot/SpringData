@@ -1,11 +1,7 @@
 package com.example.springdata.controller;
 
 import com.example.springdata.dto.OrderDto;
-import com.example.springdata.dto.ProductDto;
 import com.example.springdata.services.OrderService;
-import com.example.springdata.services.ProductService;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -23,25 +19,25 @@ import org.springframework.stereotype.Service;
 public class OrderConsoleController {
 
   private final OrderService orderService;
-  private final ProductService productService;
 
+  /**
+   * This method with main logic for this work. Switcher with step by step confirmation.
+   */
   public void start() {
     log.info("App start working.");
 
     while (true) {
-      String command = getScanner("""
+      var command = getScanner("""
           Enter command of action:
           0 - create new Order
           1 - get Order By ID
           2 - get All list of Orders
           3 - remove Order by ID from Repository
           4 - remove All Orders from Repository
-          5 - get All list of Products
-          6 - add new Product
           9 - finish work with App
           -->\s""");
       switch (Integer.parseInt(command)) {
-        case 0 -> createProductConsole();
+        case 0 -> createNewOrder();
         case 1 -> {
           int id = Integer.parseInt(getScanner("Enter ID of an Order => "));
           log.info(orderService.getOrderById(id).toString());
@@ -62,14 +58,6 @@ public class OrderConsoleController {
           }
           log.info("Repository - is already Empty!");
         }
-        case 5 ->
-            productService.getAllProducts().forEach(productDto -> log.info(productDto.toString()));
-        case 6 -> {
-          String name = getScanner("Add Name of Product => ");
-          String cost = getScanner("Add Cost of Product => ");
-          ProductDto productDto = new ProductDto(name, Double.parseDouble(cost));
-          productService.createProduct(productDto);
-        }
         case 9 -> {
           return;
         }
@@ -78,26 +66,28 @@ public class OrderConsoleController {
     }
   }
 
-  private void createProductConsole() {
-    String ids = getScanner(
-        "Add Names of Products (using ','), you'd like to add to Order => ");
-    String[] productArray = ids.toLowerCase().replace(" ", "").split(",");
-    List<ProductDto> productList = new ArrayList<>();
-    for (String s : productArray) {
-      for (ProductDto productDto : productService.getAllProducts()) {
-        if (productDto.getName().equals(s)) {
-          productList.add(productService.getByName(s));
-          OrderDto orderDto = new OrderDto(productList);
-          orderService.createOrder(orderDto);
-        } else {
-          log.info("{} {}", "There is no product in repository with name", s);
-        }
+  /**
+   * This method creates new instance of Order with adding Products to it, one by one.
+   */
+  private void createNewOrder() {
+    var orderDto = new OrderDto();
+    orderDto = orderService.createOrder(orderDto);
+    while (true) {
+      var productName = getScanner(
+          "Add Name of Product, you'd like to add to Order => ");
+      var productCost = getScanner(
+          "Add Cost of Product (in money value 0.0) => ");
+      orderDto = orderService.addProduct(orderDto.getId(), productName,
+          Double.parseDouble(productCost));
+      var scanner = getScanner("Would you like to add another product (Y/N)? => ");
+      if (!scanner.equalsIgnoreCase("Y")) {
+        break;
       }
     }
   }
 
   private static String getScanner(String string) {
-    Scanner textIn = new Scanner(System.in);
+    var textIn = new Scanner(System.in);
     log.info(string);
     return textIn.next();
   }

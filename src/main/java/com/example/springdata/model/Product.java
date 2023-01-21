@@ -2,14 +2,15 @@ package com.example.springdata.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 /*
  * @author Oksiuta Andrii
@@ -26,15 +27,11 @@ import org.hibernate.annotations.Parameter;
 public class Product {
 
   @Id
-  @GeneratedValue(generator = "sequence-generator")
-  @GenericGenerator(
-      name = "sequence-generator",
-      strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-      parameters = {
-          @Parameter(name = "sequence_name", value = "my_order.my_product_id_seq")
-      }
-  )
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private String name;
   private double cost;
+  @ManyToOne
+  @JoinColumn(name = "fk_order_id", nullable = false)
+  private Order order;
 }

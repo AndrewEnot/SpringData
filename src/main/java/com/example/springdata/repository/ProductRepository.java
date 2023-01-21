@@ -1,7 +1,6 @@
 package com.example.springdata.repository;
 
 import com.example.springdata.model.Product;
-import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,9 +11,4 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Integer> {
-
-  Product getByName(String name);
-//  Product getById(int id);
-//  List<Product> getAllProducts();
-
 }

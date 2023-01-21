@@ -1,19 +1,19 @@
 package com.example.springdata.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,23 +40,10 @@ public class Order {
 
   @JsonSerialize(using = LocalDateSerializer.class)
   @JsonDeserialize(using = LocalDateDeserializer.class)
-  private LocalDateTime dateTime;
-  private double costTotal;
-  @ManyToMany(cascade = { CascadeType.ALL })
-  @JoinTable(
-      name = "order_product",
-      joinColumns = { @JoinColumn(name = "fk_order_id") },
-      inverseJoinColumns = { @JoinColumn(name = "fk_product_id") }
-  )
-  private List<Product> products;
+  private LocalDate dateTime;
 
-  public Order(List<Product> products) {
-    this.dateTime = LocalDateTime.now();
-    this.products = products;
-    double costs = 0.0;
-    for (Product product : products) {
-      costs += product.getCost();
-    }
-    this.costTotal = (Math.round(costs * 100)) / 100.0;
-  }
+  private double costTotal;
+  @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @JsonIgnore
+  private List<Product> products;
 }
