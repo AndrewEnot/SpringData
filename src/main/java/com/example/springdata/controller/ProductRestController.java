@@ -1,7 +1,7 @@
 package com.example.springdata.controller;
 
-import com.example.springdata.dto.OrderDto;
-import com.example.springdata.services.OrderService;
+import com.example.springdata.dto.ProductDto;
+import com.example.springdata.services.ProductService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,17 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/example")
-public class OrderRestController {
+public class ProductRestController {
 
-  private final OrderService orderService;
+  private final ProductService productService;
 
-  @GetMapping(value = "/orders/{id}")
-  public OrderDto getById(@PathVariable int id) {
-    return orderService.getOrderById(id);
+  @GetMapping(value = "/products/{id}")
+  public ProductDto getProductById(@PathVariable int id) {
+    return productService.getById(id);
   }
 
-  @GetMapping(value = "/orders")
-  public List<OrderDto> getAllOrders() {
-    return orderService.getAllOrders();
+  @GetMapping(value = "/products")
+  public List<ProductDto> getAllProducts() {
+    return productService.getAllProducts();
   }
 }
