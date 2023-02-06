@@ -16,17 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/example")
+@RequestMapping("products")
 public class ProductRestController {
 
   private final ProductService productService;
 
-  @GetMapping(value = "/products/{id}")
+  @GetMapping(value = "{id}")
   public ProductDto getProductById(@PathVariable int id) {
     return productService.getById(id);
   }
 
-  @GetMapping(value = "/products")
+  @GetMapping
   public List<ProductDto> getAllProducts() {
     return productService.getAllProducts();
   }
